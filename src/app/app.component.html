@@ -1,5 +1,7 @@
 
   <div class="container" >
+    <h2> Temps écoulé {{convertTimeToDisplay(timePassed)  }} / {{  convertTimeToDisplay(gameDurationInMinutes*60) }} </h2>
+    <!-- <h2> Temps ecoule {{timePassed | date: 'hh:mm:ss'}}</h2> -->
 
     <div *ngFor = "let element of tab ; let i = index" 
           [ngClass]="{'green' : indexLastSelected === i}">
@@ -11,6 +13,11 @@
     
    
   </div>
-  <h3 *ngIf= "durationInSecond"> duree de jeu  est : {{ durationInSecond }}</h3>
+  
   <br><br>
+  <!-- <div>
+    <p> ici il faut calculer la duree et calculer un score , puis faire du respnosive pour mobile </p>
+    <p> ajouter un bouton pour rejouer vers la fin </p>
+    <p> creer la fonctionnalite de tricher pour voir la carte ou bien indice </p>
+  </div> -->
   <!-- <div id="demo"><button (click)="onTricher()">Tricher</button></div> -->

@@ -1,4 +1,6 @@
 import { Component,OnInit } from '@angular/core';
+import { interval, Observable } from 'rxjs';
+import { TimerService } from './services/timer.service';
 
 @Component({
 	selector: 'app-root',
@@ -6,6 +8,10 @@ import { Component,OnInit } from '@angular/core';
 	styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
+	
+	// ce qui nous permet de simplifier le traitement est : 
+	// les valeurs du tableau contiennent le nom de l'image affichée 
+	// ce qui simplifie la comparaison si c'est la même carte ou pas 
 
 // 	Les étapes :
 // etape 1
@@ -28,13 +34,32 @@ export class AppComponent implements OnInit{
 tab : number[] =[];
 tabIndex : number[] = [];
 countPlayingTime = 0;
-startPlaying : any;
-endPlaying : any;
-durationInSecond : number ;
+isOver : boolean = false;
+gameDurationInMinutes = 1;
+timePassed ;
+
+constructor(){
+	setTimeout(
+		() => {
+		  this.isOver = true;
+		  alert('le temps est écoulé ressayer !!!!');
+		  window.location.reload();
+		}, this.gameDurationInMinutes*60000
+	  );
+
+	interval(1000).subscribe( (resolve)=>
+		// this.timePassed = new Date(2021,6,18,13,0,0,0).getTime()+ resolve
+		this.timePassed = resolve
+	);
+	
+}
 ngOnInit(){
-	this.startPlaying = new Date();
-	console.log('test ');
-	console.log( 'start date= ' + this.startPlaying );
+
+	// let counter = interval(1000).subscribe((resolve)=>{
+		
+	// 	console.log(this.timePassed);
+	// });
+
     // la methode ngOnInit est appeler au démarage de la page ...
 	// un tableau d'indice pour faire une selection aleatoire 
 	
@@ -68,10 +93,13 @@ onClickImage(indice : number){
 
 		this.tab[indice] = -2;
 	}else{
-		// ici ajoputer le cas de selectionner la meme tuile
+		// ici c'est le cas où j'ai déjà une carte selectionnée 
 		if (indice === this.indexLastSelected ) {
+			// ici je traite  le cas de selectionner la meme tuile
+			// alors je reRemplis la case avec l'ancienne valeur 
 			this.tab[this.indexLastSelected] = this.elementLastSelected;
-		} else if( this.tab[indice] ==  this.elementLastSelected){
+		} else 
+		if( this.tab[indice] ==  this.elementLastSelected){
 			// je compare et je cache si c'est la même tuile 
 			this.tab[indice] = -2;
 			this.countPlayingTime ++ ;
@@ -85,22 +113,33 @@ onClickImage(indice : number){
 		this.elementLastSelected = -1;		
 		this.isClickedOnce = false;
 	}
-
-	if( this.countPlayingTime == 16 ){
-		this.endPlaying = new Date();
-		console.log( 'date fin == ' + this.endPlaying );
-		this.durationInSecond = this.countDateDiff(this.startPlaying, this.endPlaying);
-		alert(this.durationInSecond);
+	if(this.isOver){
+		// alert('le temps est écoulé ressayer !!!!');
+		// window.location.reload();
 	}
-}
-countDateDiff(start, end){
-	let duration = end-start;
-	// TODO convertir en second
-	duration = duration * 10;
-	console.log(' duree = ' + duration);
-	return duration ;
+	if(this.countPlayingTime == 16){
+		alert('Bravo vous avez gagné, rejouer si vous trouvez du plaisir  !!!!');
+		window.location.reload();
+	}
+
 	
 }
+
+convertTimeToDisplay(duration : number ){
+	return this.toHHMMSS(duration);
+}
+// c'est code js 
+toHHMMSS = (secs) => {
+    let sec_num = parseInt(secs, 10)    
+    let hours   = Math.floor(sec_num / 3600) % 24
+    let minutes = Math.floor(sec_num / 60) % 60
+    let seconds = sec_num % 60    
+    return [hours,minutes,seconds]
+        .map(v => v < 10 ? "0" + v : v)
+        .filter((v,i) => v !== "00" || i > 0)
+        .join(":")
+}
+
 
 melanger(tab){
     let tab2 =[];
