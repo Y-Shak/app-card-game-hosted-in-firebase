@@ -1,6 +1,5 @@
 import { Component,OnInit } from '@angular/core';
 import { interval, Observable } from 'rxjs';
-import { TimerService } from './services/timer.service';
 
 @Component({
 	selector: 'app-root',
@@ -35,7 +34,7 @@ tab : number[] =[];
 tabIndex : number[] = [];
 countPlayingTime = 0;
 isOver : boolean = false;
-gameDurationInMinutes = 1;
+gameDurationInMinutes = 0.5;
 timePassed ;
 
 constructor(){
@@ -50,8 +49,7 @@ constructor(){
 	interval(1000).subscribe( (resolve)=>
 		// this.timePassed = new Date(2021,6,18,13,0,0,0).getTime()+ resolve
 		this.timePassed = resolve
-	);
-	
+	);	
 }
 ngOnInit(){
 

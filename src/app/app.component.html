@@ -1,6 +1,6 @@
 
+  <h2> Temps écoulé {{convertTimeToDisplay(timePassed)  }} / {{  convertTimeToDisplay(gameDurationInMinutes*60) }} </h2>
   <div class="container" >
-    <h2> Temps écoulé {{convertTimeToDisplay(timePassed)  }} / {{  convertTimeToDisplay(gameDurationInMinutes*60) }} </h2>
     <!-- <h2> Temps ecoule {{timePassed | date: 'hh:mm:ss'}}</h2> -->
 
     <div *ngFor = "let element of tab ; let i = index" 
@@ -10,8 +10,7 @@
         width="80" 
         (click) = "onClickImage(i)" >
     </div>
-    
-   
+
   </div>
   
   <br><br>
